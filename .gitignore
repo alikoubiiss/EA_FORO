@@ -1,0 +1,18 @@
+# Dependencias
+node_modules/
+
+# Entorno local
+.env
+.env.local
+.vercel/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/
+.idea/
+
+# Si algún día sacáis las claves a un archivo aparte, ignoradlo aquí:
+# js/config.local.js
