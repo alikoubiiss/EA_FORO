@@ -47,7 +47,7 @@ const THREAD_FIELDS = `
   id, title, body, category, attachment, author_id, pinned,
   solved_reply_id, created_at, edited_at, last_activity,
   author:profiles!threads_author_id_fkey ( username ),
-  replies ( count ),
+  replies!replies_thread_id_fkey ( count ),
   votes ( count )
 `;
 
