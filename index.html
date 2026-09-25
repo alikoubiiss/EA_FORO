@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Spotter</title>
+<meta name="description" content="El foro de la comunidad: rutinas, técnica, progreso y marcas personales.">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top-row">
+    <div class="brand">
+      <div class="brand-row">
+        <img class="logo" src="assets/logo.svg" alt="" width="64" height="64">
+        <div><h1>Spotter</h1></div>
+      </div>
+      <p>Pregunta, comparte tus rutinas y celebra tus marcas con gente que entrena como tú.</p>
+    </div>
+    <div class="top-actions">
+      <div class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <label class="sr" for="q">Buscar en el foro</label>
+        <input id="q" type="search" placeholder="Buscar temas…" autocomplete="off">
+      </div>
+      <button class="btn primary" id="newBtn">Nuevo tema</button>
+      <div class="auth-box" id="authBox"></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap layout">
+  <nav aria-label="Categorías">
+    <ul class="sleeve" id="cats"></ul>
+    <p class="cat-desc" id="catDesc"></p>
+  </nav>
+  <main id="main"></main>
+</div>
+
+<dialog id="dlg" aria-labelledby="dlgTitle">
+  <form method="dialog" id="threadForm">
+    <div class="dlg-head">
+      <h2 id="dlgTitle">Nuevo tema</h2>
+      <button class="btn ghost" value="cancel" aria-label="Cerrar">✕</button>
+    </div>
+    <div class="dlg-body">
+      <label class="f">Título
+        <input type="text" id="fTitle" maxlength="140" required placeholder="Ej.: ¿Cómo salgo del estancamiento en press banca?">
+      </label>
+      <div class="f" role="radiogroup" aria-label="Categoría">
+        <span style="font-weight:600;font-size:14px">Categoría</span>
+        <div class="cat-pick" id="fCats"></div>
+      </div>
+      <label class="f">Mensaje
+        <textarea id="fBody" maxlength="8000" required placeholder="Cuenta el contexto: nivel, objetivo, qué has probado…"></textarea>
+      </label>
+      <div class="f">
+        <span style="font-weight:600;font-size:14px">Adjuntar entreno</span>
+        <div class="seg" id="fAttType">
+          <button type="button" data-v="none" aria-pressed="true">Nada</button>
+          <button type="button" data-v="routine" aria-pressed="false">Rutina</button>
+          <button type="button" data-v="pr" aria-pressed="false">Marca personal</button>
+        </div>
+      </div>
+      <div id="fAtt"></div>
+      <p class="hint">Escribe **texto** para negrita. Los enlaces se abren en otra pestaña.</p>
+      <div class="form-foot">
+        <span class="hint" id="fErr" role="alert"></span>
+        <div style="display:flex;gap:8px">
+          <button class="btn" value="cancel">Cancelar</button>
+          <button class="btn primary" id="fSubmit" value="default">Publicar tema</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
