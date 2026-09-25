@@ -1,4 +1,4 @@
-# dSpotter Foro
+# Spotter Foro
 
 Foro de la comunidad de dSpotter, una app de gimnasio. Proyecto de la
 asignatura Enginyeria d'Aplicacions (EETAC).
