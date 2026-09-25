@@ -11,5 +11,5 @@
 //
 //  La que NO debe salir nunca de tu panel es la clave service_role.
 //
-export const SUPABASE_URL = "https://rphbwvnokpifynmllvar.supabase.co/rest/v1/";
+export const SUPABASE_URL = "https://rphbwvnokpifynmllvar.supabase.co";
 export const SUPABASE_ANON_KEY = "sb_publishable_JflkjLGXuJxbafwq3DWZIg_vTrKo9oU";
