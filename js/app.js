@@ -23,7 +23,7 @@ const TITLE = "Spotter · Foro";
 const S = {
   ready: false, offline: false,
   threads: [], cat: "all", sort: "recent", q: "",
-  open: null, thread: null, replies: [], chReplies: null,
+  open: null, thread: null,
 };
 
 /* ---------------- Utilidades ---------------- */
@@ -55,7 +55,6 @@ const num = n => Number(n).toLocaleString("es-ES", { maximumFractionDigits: 1 })
 const e1rm = (kg, reps) => (reps <= 1 ? kg : kg * (1 + reps / 30));
 
 const ICON = {
-  check: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>',
   up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>',
   spot: '<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><circle cx="5" cy="5" r="5" fill="currentColor"/></svg>',
 };
@@ -80,9 +79,8 @@ function visibleThreads() {
   let l = S.threads.slice();
   if (S.cat !== "all") l = l.filter(t => t.cat === S.cat);
   if (S.q) { const q = S.q.toLowerCase(); l = l.filter(t => (t.title + " " + t.body).toLowerCase().includes(q)); }
-  if (S.sort === "unanswered") l = l.filter(t => t.replyCount === 0);
-  if (S.sort === "popular") l.sort((a, b) => b.score - a.score || b.lastActivity - a.lastActivity);
-  else l.sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) || b.lastActivity - a.lastActivity);
+  if (S.sort === "popular") l.sort((a, b) => b.score - a.score || b.createdAt - a.createdAt);
+  else l.sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) || b.createdAt - a.createdAt);
   return l;
 }
 
@@ -94,7 +92,7 @@ function attBadge(a) {
 }
 
 function renderList() {
-  const sorts = [["recent", "Recientes"], ["popular", "Populares"], ["unanswered", "Sin respuesta"]];
+  const sorts = [["recent", "Recientes"], ["popular", "Populares"]];
   let body;
   if (S.offline) {
     body = `<div class="empty"><h3>No se pudo cargar el foro</h3><p>Inténtalo de nuevo en unos minutos.</p></div>`;
@@ -108,17 +106,15 @@ function renderList() {
         <div class="score"><b>${t.score}</b><span>votos</span></div>
         <div>
           <h3><a href="#t/${esc(t.id)}">${esc(t.title)}</a></h3>
-          <p class="excerpt">${esc(t.body.slice(0, 240))}</p>
+          <p class="excerpt">${esc(t.body.split("**").join("").slice(0, 240))}</p>
           <div class="meta">
             <span class="chip"><span class="plate sm" style="--c:${c.color}"></span>${esc(c.name)}</span>
             ${t.pinned ? `<span class="chip pin">${ICON.spot}Fijado</span>` : ""}
-            ${t.solved ? `<span class="chip solved">${ICON.check}Resuelto</span>` : ""}
             ${attBadge(t.att)}
             <span>${esc(t.authorName || "Alguien")}</span>
-            <span>${t.replyCount ? "última actividad " + ago(t.lastActivity) : ago(t.createdAt)}</span>
+            <span>${ago(t.createdAt)}</span>
           </div>
         </div>
-        <div class="side-stat"><b>${t.replyCount}</b>${t.replyCount === 1 ? "respuesta" : "respuestas"}</div>
       </article>`;
     }).join("")
       : `<div class="empty">
@@ -162,32 +158,18 @@ function renderThread() {
     return;
   }
   const c = CAT[t.cat] || CAT.general;
-  const replies = S.replies.slice().sort((a, b) =>
-    (b.id === t.solved) - (a.id === t.solved) || a.createdAt - b.createdAt);
 
   $("#main").innerHTML = `
     <button class="back" data-act="back">← Todos los temas</button>
     <article class="post">
       <div class="meta"><span class="chip"><span class="plate sm" style="--c:${c.color}"></span>${esc(c.name)}</span>
-        ${t.pinned ? `<span class="chip pin">${ICON.spot}Fijado</span>` : ""}${t.solved ? `<span class="chip solved">${ICON.check}Resuelto</span>` : ""}</div>
+        ${t.pinned ? `<span class="chip pin">${ICON.spot}Fijado</span>` : ""}</div>
       <h1>${esc(t.title)}</h1>
       <div class="byline"><strong>${esc(t.authorName || "Alguien")}</strong><span>${ago(t.createdAt)}</span></div>
       <div class="content">${fmt(t.body)}</div>
       ${renderAtt(t.att)}
       <div class="actions"><span class="pill" aria-label="${t.score} votos">${ICON.up}${t.score}</span></div>
-    </article>
-    <h2 class="replies-head">${replies.length} ${replies.length === 1 ? "respuesta" : "respuestas"}</h2>
-    <div id="replies">${replies.map(r => renderReply(r, t)).join("")}</div>`;
-}
-
-function renderReply(r, t) {
-  const acc = r.id === t.solved;
-  return `<div class="reply${acc ? " accepted" : ""}">
-    <div class="byline"><strong>${esc(r.authorName || "Alguien")}</strong><span>${ago(r.createdAt)}</span>
-      ${acc ? `<span class="accepted-tag">${ICON.check}Solución</span>` : ""}</div>
-    <div class="content">${fmt(r.body)}</div>
-    <div class="actions"><span class="pill" aria-label="${r.score} votos">${ICON.up}${r.score}</span></div>
-  </div>`;
+    </article>`;
 }
 
 /* ---------------- Navegación ---------------- */
@@ -195,31 +177,17 @@ function renderReply(r, t) {
 function render() { S.open ? renderThread() : renderList(); }
 
 async function openThread(id) {
-  S.open = id; S.replies = []; S.thread = null;
+  S.open = id; S.thread = null;
   if (location.hash !== "#t/" + id) history.pushState(null, "", "#t/" + id);
   render(); window.scrollTo(0, 0);
-  try {
-    S.thread = await db.getThread(id);
-    S.replies = S.thread ? await db.listReplies(id) : [];
-  } catch (e) { console.error(e); }
+  try { S.thread = await db.getThread(id); }
+  catch (e) { console.error(e); }
   if (S.thread) document.title = `${S.thread.title} · ${TITLE}`;
-  db.unwatch(S.chReplies);
-  S.chReplies = db.watchReplies(id, () => refreshThread(id));
-  render();
-}
-
-async function refreshThread(id) {
-  if (S.open !== id) return;
-  try {
-    S.thread = await db.getThread(id);
-    S.replies = S.thread ? await db.listReplies(id) : [];
-  } catch (e) { console.error(e); return; }
   render();
 }
 
 function closeThread() {
-  db.unwatch(S.chReplies); S.chReplies = null;
-  S.open = null; S.thread = null; S.replies = [];
+  S.open = null; S.thread = null;
   document.title = TITLE;
   if (location.hash.startsWith("#t/")) history.pushState(null, "", location.pathname + location.search);
 }
@@ -230,7 +198,9 @@ async function refreshList() {
     S.ready = true; S.offline = false;
   } catch (e) { console.error(e); S.offline = true; }
   renderCats();
-  if (!S.open) render();
+  if (!S.open) return render();
+  const t = S.threads.find(x => x.id === S.open);
+  if (S.thread) { S.thread = t || null; render(); }
 }
 
 /* ---------------- Eventos ---------------- */

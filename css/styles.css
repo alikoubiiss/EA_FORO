@@ -50,7 +50,7 @@ img{max-width:100%;height:auto}
 .wrap{max-width:1120px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left,0px)) 0 max(16px,env(safe-area-inset-right,0px))}
 
 /* Tipografía de marca: solo mayúsculas */
-.d,.toolbar h2,.row h3,.score b,.side-stat b,.post h1,.replies-head,.log-head strong,.pr .big,
+.d,.toolbar h2,.row h3,.score b,.post h1,.log-head strong,.pr .big,
 .empty h3,.eyebrow,.seg button,.cat-name,.pill,.back{font-family:var(--display);text-transform:uppercase;letter-spacing:.02em}
 
 /* ---------- Cabecera ---------- */
@@ -99,7 +99,7 @@ header.top{padding:calc(24px + env(safe-area-inset-top,0px)) 0 24px;border-botto
 
 /* ---------- Lista de temas ---------- */
 .list{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-m);overflow:hidden}
-.row{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:16px;padding:16px 24px 16px 16px;border-top:1px solid var(--border);align-items:start;cursor:pointer}
+.row{display:grid;grid-template-columns:56px minmax(0,1fr);gap:16px;padding:16px 24px 16px 16px;border-top:1px solid var(--border);align-items:start;cursor:pointer}
 .row:first-child{border-top:0}
 .row:hover{background:var(--raised)}
 .row.pinned{background:var(--spot-tint)}
@@ -114,11 +114,8 @@ header.top{padding:calc(24px + env(safe-area-inset-top,0px)) 0 24px;border-botto
 .chip{display:inline-flex;align-items:center;gap:8px;min-height:24px;font-size:13px;font-weight:600;color:var(--ink);
   background:var(--raised);border:1px solid var(--border);padding:0 12px 0 8px;border-radius:999px}
 .chip svg{flex:none}
-.chip.solved{color:var(--success);border-color:var(--success);background:none}
 .chip.pin{color:var(--spot-text);border-color:var(--spot-text);background:none}
 .chip.att{background:none;border-color:var(--border-strong)}
-.side-stat{text-align:right;font-size:14px;color:var(--muted);white-space:nowrap;padding-top:4px}
-.side-stat b{display:block;font-size:24px;line-height:1;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
 
 .empty{padding:48px 24px;text-align:center;color:var(--muted)}
 .empty h3{color:var(--ink);font-size:28px;line-height:1.1;font-weight:700;margin:0 0 8px}
@@ -143,12 +140,6 @@ header.top{padding:calc(24px + env(safe-area-inset-top,0px)) 0 24px;border-botto
 .pill{display:inline-flex;align-items:center;gap:8px;min-height:32px;padding:0 16px;border:1px solid var(--border-strong);border-radius:999px;
   font-size:16px;font-weight:700;font-variant-numeric:tabular-nums}
 .pill svg{width:16px;height:16px}
-.replies-head{font-size:28px;line-height:1;font-weight:700;margin:32px 0 16px}
-.reply{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-m);padding:16px 24px;margin-bottom:12px}
-.reply .content{margin-top:12px}
-.reply .actions{margin-top:16px}
-.reply.accepted{border-color:var(--success);border-left-width:4px}
-.accepted-tag{display:inline-flex;gap:4px;align-items:center;color:var(--success);font-weight:700}
 
 /* ---------- Adjuntos: rutina y marca ---------- */
 .log{margin-top:24px;border:1px solid var(--border);border-radius:var(--r-m);overflow:hidden;max-width:560px;background:var(--bg)}
@@ -193,10 +184,8 @@ header.top{padding:calc(24px + env(safe-area-inset-top,0px)) 0 24px;border-botto
   .seg button{flex:1;padding:0 4px;font-size:14px;white-space:nowrap}
   .row{grid-template-columns:40px minmax(0,1fr);gap:12px;padding:16px 16px 16px 12px}
   .score b{font-size:24px}
-  .side-stat{display:none}
   .row h3{font-size:20px}
   .post{padding:16px;border-radius:var(--r-m)}
-  .reply{padding:16px}
   .log{max-width:none}
   .pr .big{font-size:52px}
 }

@@ -5,7 +5,8 @@ asignatura Enginyeria d'Aplicacions (EETAC).
 
 **Es de solo lectura y público**: cualquiera puede entrar y leer, sin
 registrarse ni iniciar sesión. Los temas y respuestas los publica el
-administrador directamente en la base de datos. Los temas pueden llevar
+administrador directamente en la base de datos. Solo hay publicaciones, sin
+respuestas. Pueden llevar
 adjunta una rutina o una marca personal; el foro calcula el volumen y el
 1RM estimado con la fórmula de Epley.
 
@@ -38,7 +39,7 @@ spotter/
 │  └─ app.js             Estado, renderizado y eventos
 └─ supabase/
    ├─ schema.sql         Tablas, lectura pública y tiempo real
-   └─ seed.sql           Autores, temas y respuestas de ejemplo (inventados)
+   └─ seed.sql           Autores y publicaciones de ejemplo (inventados)
 ```
 
 ---
@@ -86,17 +87,14 @@ insert into public.profiles (username) values ('nuevo_autor');
 insert into public.threads (title, body, category, author_id)
 values ('Título del tema', 'Texto. Usa **negrita** si quieres.', 'general',
         (select id from public.profiles where username = 'nuevo_autor'));
-
--- 3. Una respuesta
-insert into public.replies (thread_id, author_id, body)
-values ('<id del tema>', (select id from public.profiles where username = 'nuevo_autor'), 'Texto');
 ```
 
 - **Adjuntos** (`attachment`, JSON):
   `{"type":"pr","ex":"Sentadilla","kg":120,"reps":3}` o
   `{"type":"routine","name":"Empuje A","items":[{"ex":"Press banca","sets":4,"reps":6,"kg":70}]}`.
 - **Fijar un tema**: `update public.threads set pinned = true where id = '…';`
-- **Marcar solución**: `update public.threads set solved_reply_id = '<id respuesta>' where id = '…';`
-- **Votos**: son un número (`score`) en temas y respuestas, no hay votos
+- **Votos**: son un número (`score`) en cada publicación, no hay votos
   de usuarios.
 - Las pestañas abiertas reciben los cambios sin recargar (tiempo real).
+
+La tabla `replies` sigue en el esquema, pero la web no la usa.
