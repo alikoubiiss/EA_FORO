@@ -80,7 +80,9 @@ function visibleThreads() {
   if (S.cat !== "all") l = l.filter(t => t.cat === S.cat);
   if (S.q) { const q = S.q.toLowerCase(); l = l.filter(t => (t.title + " " + t.body).toLowerCase().includes(q)); }
   if (S.sort === "popular") l.sort((a, b) => b.score - a.score || b.createdAt - a.createdAt);
-  else l.sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) || b.createdAt - a.createdAt);
+  // Fijados arriba en orden cronológico (el más antiguo primero); el resto, del más nuevo al más antiguo.
+  else l.sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0)
+    || (a.pinned ? a.createdAt - b.createdAt : b.createdAt - a.createdAt));
   return l;
 }
 
